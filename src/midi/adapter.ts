@@ -2,9 +2,9 @@ import type { ArgosProtocol, MidiMessage } from './protocol';
 import type { Preset, PresetParameters, PresetNumber } from '../domain/types';
 
 export class ArgosMidiAdapter implements ArgosProtocol {
-  private midiAccess: any | null = null;
-  private output: any | null = null;
-  private input: any | null = null;
+  private midiAccess: MIDIAccess | null = null;
+  private output: MIDIOutput | null = null;
+  private input: MIDIInput | null = null;
 
   // Keep track of the currently selected MIDI channel (1-16)
   private channel: number = 0; // 0-indexed for MIDI messages (0 = channel 1)
@@ -18,7 +18,7 @@ export class ArgosMidiAdapter implements ArgosProtocol {
     this.handleStateChange = this.handleStateChange.bind(this);
   }
 
-  async initialize(): Promise<any> {
+  async initialize(): Promise<MIDIAccess> {
     if (!navigator.requestMIDIAccess) {
       throw new Error('Web MIDI API is not supported in this browser.');
     }
@@ -28,12 +28,12 @@ export class ArgosMidiAdapter implements ArgosProtocol {
     return this.midiAccess;
   }
 
-  getInputs(): any[] {
+  getInputs(): MIDIInput[] {
     if (!this.midiAccess) return [];
     return Array.from(this.midiAccess.inputs.values());
   }
 
-  getOutputs(): any[] {
+  getOutputs(): MIDIOutput[] {
     if (!this.midiAccess) return [];
     return Array.from(this.midiAccess.outputs.values());
   }
@@ -188,16 +188,16 @@ export class ArgosMidiAdapter implements ArgosProtocol {
     }
   }
 
-  private handleStateChange(_event: any): void {
+  private handleStateChange(_event: MIDIConnectionEvent): void {
     if (this.onConnectionStateChange) {
       this.onConnectionStateChange();
     }
   }
 
-  private handleMidiMessage(event: any): void {
+  private handleMidiMessage(event: MIDIMessageEvent): void {
     if (!this.onMessageReceived || !event.data) return;
 
-    const status = (event.data as any)[0];
+    const status = event.data[0];
     const typeByte = status & 0xF0;
     const channel = status & 0x0F;
     const data = Array.from(event.data as Iterable<number>);

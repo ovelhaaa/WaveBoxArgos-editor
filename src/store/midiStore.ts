@@ -5,8 +5,8 @@ import type { MidiMessage } from '../midi/protocol';
 interface MidiState {
   isSupported: boolean;
   isConnected: boolean;
-  inputs: any[];
-  outputs: any[];
+  inputs: MIDIInput[];
+  outputs: MIDIOutput[];
   selectedPortId: string | null;
   midiLogs: MidiMessage[];
   rxChannel: number | 'ALL' | 'OFF';
