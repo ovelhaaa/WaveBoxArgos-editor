@@ -39,7 +39,7 @@ npm run test
 - **Styling:** Tailwind CSS (for rapid, maintainable, and responsive UI)
 - **State Management:** Zustand (for lightweight, boilerplate-free state logic)
 - **Validation:** Zod (for domain model validation against the manual limits)
-- **MIDI Layer:** Abstract `ArgosMidiPort` built over the native `WebMidi.MIDIAccess`.
+- **MIDI Layer:** Abstract `ArgosMidiAdapter` built over the native `WebMidi.MIDIAccess`.
 
 ### Domain Logic & UX Safety
 
